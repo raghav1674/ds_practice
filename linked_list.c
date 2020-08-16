@@ -21,7 +21,7 @@ typedef struct Node
 
 } NODE;
 
-NODE *head;
+NODE *head = NULL;
 
 bool isEmpty()
 {
