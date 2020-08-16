@@ -3,7 +3,7 @@
 
 int size;
 
-
+// bool datatype
 typedef enum boolean
 {
     false,
@@ -12,7 +12,7 @@ typedef enum boolean
 
 
 
-
+// Node structure
 typedef struct Node
 {
 
@@ -21,19 +21,26 @@ typedef struct Node
 
 } NODE;
 
+
+// global head pointer
 NODE *head = NULL;
 
+
+// check if the list is empty or not
 bool isEmpty()
 {
     return head == NULL ? true : false;
 }
 
+// returns the current elements in the list
 int length()
 {
 
     return size;
 }
 
+
+// prints the  elements in the list
 void display()
 {
 
@@ -52,6 +59,8 @@ void display()
     printf("\n");
 }
 
+
+// creates a new node
 NODE* createNode(int data)
 {
 
@@ -62,6 +71,8 @@ NODE* createNode(int data)
     return newNode;
 }
 
+
+// inserts the element with given data at the beginning of the list
 void addFirst(int data)
 {
 
@@ -79,6 +90,7 @@ void addFirst(int data)
     size++;
 }
 
+// inserts the element with given data at the end of the list
 void addLast(int data)
 {
 
@@ -100,6 +112,7 @@ void addLast(int data)
     size++;
 }
 
+// inserts the element with given data within the current size of that list
 void insert(int data, int index)
 {
 
@@ -129,6 +142,8 @@ void insert(int data, int index)
     size++;
 }
 
+
+// deletes the element from the beginning of the list
 void removeFirst()
 {
     
@@ -145,7 +160,7 @@ void removeFirst()
     size--;
 }
 
-
+// deletes the element from the given index of the list
 void removeAt(int index){
 
   NODE* temp=head;
@@ -178,7 +193,7 @@ void removeAt(int index){
 
 }
 
-
+// deletes the element from the end of the list
 void removeLast()
 {
 
@@ -203,47 +218,46 @@ void removeLast()
     size--;
 }
 
+
+// returns 0 if element not found in the list otherwise returns 1
 bool contains(int data)
 {
-    bool isPresent = false;
+    
     NODE *temp = head;
     while (temp != NULL)
     {
         if (temp->data == data)
         {
-            isPresent = true;
-            break;
+            return true;
+        
         }
         temp = temp->next;
     }
-    if (isPresent)
-        return true;
-    else
-        return false;
+    
+     return false;
 }
+
+// returns the first index of the given element in the list , if not present returns -1
 
 int firstIndexOf(int data)
 {
-    bool isPresent = false;
+
     NODE *temp = head;
     int index, i = 0;
     while (temp != NULL)
     {
         if (temp->data == data)
         {
-            isPresent = true;
-            index = i;
+           
+            return i;
 
-            break;
         }
         i++;
         temp = temp->next;
     }
-    if (isPresent)
-        return index;
-    else
-        return -1;
+    return -1;
 }
+
 
 
 
