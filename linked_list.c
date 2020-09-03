@@ -1,290 +1,282 @@
 #include <stdio.h>
+#include<conio.h>
 #include <stdlib.h>
 
-int size;
-
-// bool datatype
-typedef enum boolean
-{
-    false,
-    true
-} bool;
-
-
-
-// Node structure
-typedef struct Node
+typedef struct node
 {
 
-    int data;
-    struct Node *next;
+  int data;
+
+  struct node *next;
 
 } NODE;
 
-
-// global head pointer
-NODE *head = NULL;
-
-
-// check if the list is empty or not
-bool isEmpty()
+NODE *createNode(int data)
 {
-    return head == NULL ? true : false;
+
+  NODE *temp;
+  temp = (NODE *)malloc(sizeof(NODE));
+  temp->data = data;
+  temp->next = NULL;
 }
 
-// returns the current elements in the list
-int length()
+void addFirst(NODE **start, int data)
 {
 
-    return size;
+  NODE *temp = createNode(data);
+
+  temp->next = *start;
+  *start = temp;
 }
 
-
-// prints the  elements in the list
-void display()
+void addLast(NODE **start, int data)
 {
 
-    NODE *temp = head;
+  NODE *t;
+  NODE *temp = createNode(data);
 
-    if (isEmpty())
+  if (*start == NULL)
+  {
+
+    *start = temp;
+  }
+  else
+  {
+
+    t = *start;
+
+    while (t->next != NULL)
     {
-        return;
-    }
-    while (temp != NULL)
-    {
-        printf("%d ", temp->data);
-        temp = temp->next;
+
+      t = t->next;
     }
 
-    printf("\n");
+    t->next = temp;
+  }
 }
 
-
-// creates a new node
-NODE* createNode(int data)
+NODE *search(NODE *start, int prevdata)
 {
 
-    NODE *newNode = (NODE *)malloc(sizeof(NODE));
-    newNode->data = data;
-    newNode->next = NULL;
+  while (start != NULL)
+  {
 
-    return newNode;
+    if (start->data == prevdata)
+      return start;
+    // printf("hello ");
+    start = start->next;
+  }
+
+  return NULL;
 }
 
-
-// inserts the element with given data at the beginning of the list
-void addFirst(int data)
+void insertAfter(NODE *start, int previousData, int data)
 {
+
+  NODE *t = search(start, previousData);
+  //  printf("inside next %d   ",t->data);
+
+  if (t)
+  {
 
     NODE *newNode = createNode(data);
-    if (isEmpty())
-    {
 
-        head = newNode;
-        size++;
-        return;
-    }
+    newNode->next = t->next;
+    t->next = newNode;
+  }
+  else
+  {
 
-    newNode->next = head;
-    head = newNode;
-    size++;
+    printf("\nNo such Node with the value of %d\n", previousData);
+    exit(0);
+  }
 }
 
-// inserts the element with given data at the end of the list
-void addLast(int data)
+void deleteFirst(NODE **start)
 {
 
-    NODE *newNode = createNode(data);
-    if (isEmpty())
-    {
+  if (*start == NULL)
+  {
+    printf("No Node to delete");
+    exit(0);
+  }
+  else
+  {
 
-        head = newNode;
-        size++;
-        return;
-    }
-    NODE *temp = head;
-
-    while (temp->next != NULL)
-    {
-        temp = temp->next;
-    }
-    temp->next = newNode;
-    size++;
-}
-
-// inserts the element with given data within the current size of that list
-void insert(int data, int index)
-{
-
-    NODE *newNode = createNode(data);
-    NODE *temp = head;
-    int i = 0;
-    if (index < 0 || index >= size)
-    {
-        printf("INDEX_OUT_OF_BOUND\nThe specified index is either negative or greater than than the current length of list.\nCurrent length of the list is %d", size);
-        return;
-    }
-
-    if (index == 0)
-    {
-        addFirst(data);
-        return;
-    }
-    while (i < index - 1)
-    {
-
-        temp = temp->next;
-        i++;
-    }
-
-    newNode->next = temp->next;
-    temp->next = newNode;
-    size++;
-}
-
-
-// deletes the element from the beginning of the list
-void removeFirst()
-{
-    
-    if (isEmpty())
-    {
-        printf("List is empty.\n");
-        return;
-    }
-
-    NODE *temp = head;
-    head = head->next;
+    NODE *temp = *start;
+    *start = (*start)->next;
 
     free(temp);
-    size--;
-}
-
-// deletes the element from the given index of the list
-void removeAt(int index){
-
-  NODE* temp=head;
-  NODE* ptr;
-  int i=0;
-  if (index < 0 || index >= size)
-    {
-        printf("INDEX_OUT_OF_BOUND\nThe specified index is either negative or greater than than the current length of list.\nCurrent length of the list is %d\n", size);
-        return;
-    }
-  if(index==0){
-      removeFirst();
-    
-      return;
   }
-  if(!isEmpty()){
-  while(i<index-1){
-    
-    temp=temp->next;
-  
-    i++;
-  } 
- ptr=temp->next;
- temp->next=ptr->next;
- free(ptr);
- size--;
-
 }
 
-
-}
-
-// deletes the element from the end of the list
-void removeLast()
+void deleteLast(NODE **start)
 {
+  if (*start == NULL)
+  {
+    printf("No Node to delete");
+    exit(0);
+  }
 
-    if(size == 1 || isEmpty()){
-
-        removeFirst();
-        return;
-    }   
-    NODE *ptr;
-    NODE *temp = head;
-
-    while (temp->next->next != NULL)
+  else if ((*start)->next == NULL)
+  {
+    free(start);
+    *start = NULL;
+    printf("List is Empty\n");
+  }
+  else
+  {
+    NODE *t;
+    NODE *temp = *start;
+    while (temp->next != NULL)
     {
-        temp = temp->next;
+      t = temp;
+      temp = temp->next;
     }
 
-    ptr = temp->next;
-
-    temp->next = NULL;
-
-    free(ptr);
-    size--;
+    t->next = NULL;
+    free(temp);
+  }
 }
 
-
-// returns 0 if element not found in the list otherwise returns 1
-bool contains(int data)
-{
-    
-    NODE *temp = head;
-    while (temp != NULL)
-    {
-        if (temp->data == data)
-        {
-            return true;
-        
-        }
-        temp = temp->next;
-    }
-    
-     return false;
-}
-
-// returns the first index of the given element in the list , if not present returns -1
-
-int firstIndexOf(int data)
+void delete (NODE **start, int data)
 {
 
-    NODE *temp = head;
-    int index, i = 0;
-    while (temp != NULL)
-    {
-        if (temp->data == data)
-        {
-           
-            return i;
+  NODE *temp = *start;
 
-        }
-        i++;
-        temp = temp->next;
+  NODE *t = search(temp, data);
+
+  if (t)
+  {
+    if (t == *start)
+    {
+
+      *start = t->next;
+      free(t);
     }
-    return -1;
+    else
+    {
+
+      while (temp->next != t)
+      {
+        temp = temp->next;
+      }
+      temp->next = t->next;
+      free(t);
+    }
+  }
 }
 
+void display(NODE *start)
+{
 
+  if (start == NULL)
+    printf("List is Empty.\n");
+  else
+  {
+    while (start != NULL)
+    {
 
+      printf("%d ", start->data);
+      start = start->next;
+    }
+  }
+}
+
+int menu()
+{
+
+  int choice;
+  printf("\nPRESS 1: TO INSERT AT THE BEGINNING \n");
+  printf("PRESS 2: TO INSERT AT THE END \n");
+  printf("PRESS 3: TO INSERT AFTER A GIVEN DATA \n");
+  printf("PRESS 4: TO DELETE FROM THE BEGINNING \n");
+  printf("PRESS 5: TO DELETE FROM THE BEGINNING \n");
+  printf("PRESS 6: TO DELETE THE NODE WITH GIVEN DATA \n");
+  printf("PRESS 7: TO VIEW THE LIST. \n");
+  printf("PRESS 8: TO EXIT THE PROGRAM. \n");
+
+  printf("\nENTER YOU CHOICE: ");
+  scanf("%d", &choice);
+  return choice;
+}
 
 int main()
 {
-    addLast(200);
-    // addFirst(10);
-    // addLast(401);
-    // insert(801, 1);
-    insert(801, 0);]
 
-    addFirst(901);
-    addFirst(901);
-    addFirst(901);
-    // removeAt(0);
-    
-    // printf("%d\n",contains(1));
-     printf("%d\n",indexOf(901));
+  NODE *start = NULL;
 
-    // removeLast();
-    // removeLast();
-  
-    // removeLast();
+  while (1)
+  {
 
- 
-    // removeFirst();
-    // removeFirst();
-    printf("%d\n", length());
-    display();
+    int prevData;
+    int data;
+    switch (menu())
+    {
+
+    case 1:
+      printf("Enter the data to insert at the beginning: \n");
+      scanf("%d", &data);
+      addFirst(&start, data);
+      break;
+    case 2:
+      printf("Enter the data to insert at the end: \n");
+      scanf("%d", &data);
+      addLast(&start, data);
+      break;
+    case 3:
+      printf("Enter the data to insert: \n");
+      scanf("%d", &data);
+      printf("Enter the data after which you want to insert: \n");
+      scanf("%d", &prevData);
+      insertAfter(start, prevData, data);
+      break;
+    case 4:
+      deleteFirst(&start);
+      printf("Data at the beginning is deleted.\n");
+      break;
+    case 5:
+      deleteLast(&start);
+      printf("Data at the last is deleted.\n");
+      break;
+    case 6:
+      printf("Enter the data to delete : \n");
+      scanf("%d", &data);
+      delete (&start, data);
+      break;
+
+    case 7:
+      printf("Current List: \n");
+      display(start);
+      printf("\n");
+      break;
+    case 8:
+      printf("Thanks for choosing our program.\n");
+      exit(0);
+    }
+    getch();
+    system("cls");
+  }
+
+  // addFirst(&start, 20);
+
+  // //  display(start);
+  // addFirst(&start, 30);
+
+  // addLast(&start, 80);
+
+  // insertAfter(start, 20, 40);
+
+  // // addLast(&start, 90);
+
+  // deleteFirst(&start);
+
+  // deleteLast(&start);
+
+  // delete(&start, 20);
+  // delete(&start, 40);
+
+  // display(start);
+
+  return 0;
 }
