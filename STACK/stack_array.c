@@ -56,6 +56,12 @@ void pop(STACK *array)
 
 int peek(STACK *array)
 {
+     if (array->top == -1)
+    {
+
+        printf("STACK IS EMPTY");
+        exit(0);
+    }
 
     return array->arr[array->top];
 }
