@@ -23,31 +23,31 @@ QUEUE *createQueue(int capacity)
     return temp;
 }
 
-void doublequeue(QUEUE *queue)
+void doublequeue(QUEUE *queue) // we are traversing from front to rear(also checking if it reaches the capacity-1) and then in index we are making front to 0 and rear = index value 
 {
-        printf("hello ");
-    int *temp = (int *)malloc(sizeof(int) * (queue->capacity * 2));
 
+    int *temp = (int *)malloc(sizeof(int) * (queue->capacity * 2));
+    int index = 0;
     int i = queue->front;
-    while (i != queue->rear)
+
+    while (i % queue->capacity != queue->rear)
+
     {
 
-        // temp[(i + queue->capacity*2 )% queue->capacity*2] = queue->ptr[i% queue->capacity];
-
-        temp[i] = queue->ptr[i % queue->capacity];
+        temp[index] = queue->ptr[i % queue->capacity];
         i++;
+        index++;
     }
-    temp[i] = queue->ptr[queue->rear];
+    temp[index] = queue->ptr[queue->rear];
     free(queue->ptr);
     queue->ptr = temp;
-    queue->rear = i;
-    // queue->front = queue->rear%queue->capacity + queue->capacity;
+    queue->rear = index;
+    queue->front = 0;
+
     queue->capacity *= 2;
-    // for(int i=0;i<queue->capacity;i++)
-    // printf("%d    ",queue->ptr[i]);
 }
 
-void enqueue(QUEUE *queue, int data)
+void enqueue(QUEUE *queue, int data)   
 {
 
     if ((queue->rear + 1) % queue->capacity == queue->front)
@@ -73,7 +73,7 @@ void enqueue(QUEUE *queue, int data)
 void dequeue(QUEUE *queue)
 {
 
-    if (queue->front==-1)
+    if (queue->front == -1)
     {
 
         printf("QUEUE UNDERFLOW\n");
@@ -86,20 +86,18 @@ void dequeue(QUEUE *queue)
     }
 
     else
-    {   
-        printf("ho");
+    {
         queue->front = (queue->front + 1) % queue->capacity;
     }
 }
-
 
 void display(QUEUE *queue)
 {
 
     int i = queue->front;
-    while (i != queue->rear)
-    {
 
+    while (i % queue->capacity != queue->rear)
+    {
         printf("%d ", queue->ptr[i % queue->capacity]);
         i++;
     }
@@ -112,48 +110,64 @@ int main()
     QUEUE *queue = createQueue(5);
     enqueue(queue, 10);
 
-    printf("FRONT--%d\n",queue->front);
-    printf("REAR--%d\n",queue->rear);
-    
-    enqueue(queue, 20);
-    dequeue(queue);
-    printf("FRONT--%d\n",queue->front);
+    printf("FRONT--%d\n", queue->front);
+    printf("REAR--%d\n", queue->rear);
 
-    printf("REAR--%d\n",queue->rear);
+    enqueue(queue, 20);
+    // dequeue(queue);
+    printf("FRONT--%d\n", queue->front);
+
+    printf("REAR--%d\n", queue->rear);
 
     enqueue(queue, 30);
-    printf("FRONT--%d\n",queue->front);
-    printf("REAR--%d\n",queue->rear);
+    printf("FRONT--%d\n", queue->front);
+    printf("REAR--%d\n", queue->rear);
     enqueue(queue, 40);
-    printf("FRONT--%d\n",queue->front);
-    printf("REAR--%d\n",queue->rear);
+    printf("FRONT--%d\n", queue->front);
+    printf("REAR--%d\n", queue->rear);
 
     enqueue(queue, 50);
-    printf("FRONT--%d\n",queue->front);
-    printf("REAR--%d\n",queue->rear);
+    printf("FRONT--%d\n", queue->front);
+    printf("REAR--%d\n", queue->rear);
     enqueue(queue, 60);
-    printf("FRONT--%d\n",queue->front);
-    printf("REAR--%d\n",queue->rear);
-    // dequeue(queue);
-    //  printf("FRONT--%d\n",queue->front);
-    // printf("REAR--%d\n",queue->rear);
+    printf("FRONT--%d\n", queue->front);
+    printf("REAR--%d\n", queue->rear);
+    dequeue(queue);
+    printf("FRONT--%d\n", queue->front);
+    printf("REAR--%d\n", queue->rear);
     enqueue(queue, 70);
-     printf("FRONT--%d\n",queue->front);
-    printf("REAR--%d\n",queue->rear);
-    enqueue(queue, 80);
-     printf("FRONT--%d\n",queue->front);
-    printf("REAR--%d\n",queue->rear);
-    enqueue(queue, 90);
-     printf("FRONT--%d\n",queue->front);
-    printf("REAR--%d\n",queue->rear);
-    enqueue(queue, 100);
-     printf("FRONT--%d\n",queue->front);
-    printf("REAR--%d\n",queue->rear);
+    printf("FRONT--%d\n", queue->front);
+    printf("REAR--%d\n", queue->rear);
+    // enqueue(queue, 80);
+    dequeue(queue);
 
-    // dequeue(queue);
-     enqueue(queue, 110);
-      printf("FRONT--%d\n",queue->front);
-    printf("REAR--%d\n",queue->rear);
+    printf("FRONT--%d\n", queue->front);
+    printf("REAR--%d\n", queue->rear);
+    enqueue(queue, 90);
+    printf("FRONT--%d\n", queue->front);
+    printf("REAR--%d\n", queue->rear);
+    enqueue(queue, 100);
+    printf("FRONT--%d\n", queue->front);
+    printf("REAR--%d\n", queue->rear);
+    enqueue(queue, 110);
+    printf("FRONT--%d\n", queue->front);
+    printf("REAR--%d\n", queue->rear);
+    enqueue(queue, 120);
+    printf("FRONT--%d\n", queue->front);
+    printf("REAR--%d\n", queue->rear);
+    dequeue(queue);
+    //  enqueue(queue, 110);
+    printf("FRONT--%d\n", queue->front);
+    printf("REAR--%d\n", queue->rear);
+
+    dequeue(queue);
+    //  enqueue(queue, 110);
+    printf("FRONT--%d\n", queue->front);
+    printf("REAR--%d\n", queue->rear);
+
+    enqueue(queue, 130);
+    printf("FRONT--%d\n", queue->front);
+    printf("REAR--%d\n", queue->rear);
 
     display(queue);
     return 0;
