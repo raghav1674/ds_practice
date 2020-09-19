@@ -1,0 +1,17 @@
+#include<stdio.h>
+int sum(int n){
+    
+    if(n==1)
+        return 2;
+    return 2*n + sum(n-1);
+    
+}
+
+
+int main(){
+    
+    printf("%d",sum(1000));
+    
+    
+    return 0;
+}
