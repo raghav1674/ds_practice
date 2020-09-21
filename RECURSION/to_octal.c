@@ -10,7 +10,7 @@ void toOctal(int n){
     
     else{
           
-         toBinary(n/8);
+         toOctal(n/8);
           printf("%d",n%8);
     }
 }
