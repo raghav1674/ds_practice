@@ -59,18 +59,18 @@ EDGE *_take_edges(GRAPH *temp_graph)
 
 // will insert  1 where there is an edge
 
-void insert(GRAPH **temp_graph)
+void insert(GRAPH *temp_graph) // no need to passing by reference
 {
 
-    EDGE *temp_edges_Array = _take_edges(*temp_graph);
+    EDGE *temp_edges_Array = _take_edges(temp_graph);
 
-    for (int i = 0; i < (*temp_graph)->edges; i++)
+    for (int i = 0; i < (temp_graph)->edges; i++)
     {
         if (temp_edges_Array[i].u != temp_edges_Array[i].v)//if both are not equal then only insert it in both arr[u][v] and arr[v][u]
 
-            (*temp_graph)->adjanency_matrix[temp_edges_Array[i].u - 1][temp_edges_Array[i].v - 1] = 1; // storing in arr[i][j]=1 and arr[j][i]=1 as it is undirected graph.
+            (temp_graph)->adjanency_matrix[temp_edges_Array[i].u - 1][temp_edges_Array[i].v - 1] = 1; // storing in arr[i][j]=1 and arr[j][i]=1 as it is undirected graph.
 
-        (*temp_graph)->adjanency_matrix[temp_edges_Array[i].v - 1][temp_edges_Array[i].u - 1] = 1;
+        (temp_graph)->adjanency_matrix[temp_edges_Array[i].v - 1][temp_edges_Array[i].u - 1] = 1;
     }
 }
 
@@ -106,7 +106,7 @@ int main()
     GRAPH *my_graph = create_graph(num_vertices, num_edges);
 
     printf("\n");
-    insert(&my_graph);
+    insert(my_graph);
     printf("\nPrinting the Graph: \n\n");
     display(my_graph);
 
