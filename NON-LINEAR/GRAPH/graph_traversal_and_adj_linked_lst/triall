@@ -1,0 +1,84 @@
+Edge pair , weight;
+
+tyepdef struct Edge{
+
+    int u,v,weight;
+
+}EDGE;
+
+// take the edges along with the weight.
+
+
+void create_edges(){
+
+EDGE *pairs_with_weight=(EDGE*)malloc(sizeof(EDGE)*(temp_graph->num_edges));
+EDGE*A=(EDGE*)malloc(sizeof(EDGE)*(temp_graph->num_edges));
+for(int i=0;i<temp_graph->edges;i++){
+
+    printf("Enter the %d Edge Pair with weight\n",i+1);
+    scanf("%d %d %d",&pairs[i].u,&pairs[i].v,&pairs[i].weight);
+}
+sort_edges(pairs_with_weight,num_edges);
+
+for(int i=0;i<temp_graph->edges;i++){
+
+        if(find_set(pairs_with_weight,pairs_with_weight[i].u)!=find_set(pairs_with_weight,pairs_with_weight[i].v)){
+
+                        A[i]=pairs_with_weight[i];
+                        update(pairs_with_weight,pairs_with_weight[i].u,pairs_with_weight[i].v);
+
+        }
+}       
+
+}
+
+// sort the edges.
+
+void sort_edges(EDGE* edge_array,int num_edge){
+    Edge temp;
+    for(int i=0;i<num_edge-1;i++){
+
+        for(int j=0;j<num_edge-i;j++){
+            if(edge_array[j].weight>edge_array[j+1]){
+                temp=edge_array[j];
+                edge_array[j]=edge_array[j+1];
+                edge_array[j+1]=temp;
+                
+            }
+        }
+    }
+
+}
+
+SET = [1] [2] [3] [4]  [5] //set of all the vertices
+       1   1   2   3    4 
+
+int* create_set(int num_vertex){
+
+    int* set_vertices=(int*)malloc(sizeof(int)*num_vertex);
+    for(int i=0;i<num_vertex;i++){
+
+        set_vertices[i]=i+1;
+    }
+    return set_vertices;
+}
+
+
+int find_set(int u,int* set){
+
+    return set[u-1];
+}
+
+
+void update(int* set,int u int v,int num_vertex){
+
+    int i=0;
+    while(set[i]!=u-1){
+        i++;
+    }
+    set[v]=set[i];
+
+
+
+}
+

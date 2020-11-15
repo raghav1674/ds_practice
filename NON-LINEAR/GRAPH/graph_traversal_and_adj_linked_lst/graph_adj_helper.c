@@ -3,11 +3,11 @@
 #include <string.h>
 #include<stdlib.h>
 
-typedef struct edge{
+// typedef struct edge{
 
-int u,v;
+// int u,v;
 
-}EDGE;
+// }EDGE;
 
 
 typedef struct node
